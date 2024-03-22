@@ -1,0 +1,20 @@
+{
+    "name": "al.barinov/leveltwo",
+    "autoload": {
+        "psr-4": {
+            "App\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "al.barinov",
+            "email": "barinulka@yandex.ru"
+        }
+    ],
+    "require": {
+        "fakerphp/faker": "^1.23"
+    },
+    "require-dev": {
+        "roave/security-advisories": "dev-latest"
+    }
+}
