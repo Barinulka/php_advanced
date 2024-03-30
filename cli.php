@@ -10,33 +10,22 @@ use App\Model\Person\Name;
 use App\Model\Person\Person;
 use App\Repository\UserRepository\InMemoryUserRepository;
 
-// spl_autoload_register('load');
+$faker = Faker\Factory::create('ru_RU');
 
-function load($className) {
+$name = new Name($faker->firstName('male'), $faker->lastName('male'));
+$user = new User(1, $name, $faker->userName());
+$person = new Person($name, new DateTimeImmutable());
+$post = new Post(1, $person, $faker->realText(rand(50,100)));
+$comment = new Comment(1, $user, $post, $faker->realText(rand(50,100)));
 
-    $file = $className . '.php';
+try {
+    $userRepository = new InMemoryUserRepository();
+    $userRepository->save($user);
 
-    $file = str_replace("/", DIRECTORY_SEPARATOR, $file);
-    $file = preg_replace('/Class_/', 'Class/', $file);
-    if (file_exists($file)) {
-        include $file;
-    }
+    echo $userRepository->get(1);
+
+} catch (Exception $e) {
+    echo 'Что-то пошло не так' . PHP_EOL;
+    echo $e->getMessage() . PHP_EOL;
 }
-
- $name = new Name("Ivan", "Ivanov");
- $user = new User(1, $name, 'Admin');
- $person = new Person($name, new DateTimeImmutable());
- $post = new Post(1, $person, 'some text');
- $comment = new Comment(1, $user, $post, 'comment');
-
- try {
-     $userRepository = new InMemoryUserRepository();
-     $userRepository->save($user);
-
-     echo $userRepository->get(5);
-
- } catch (Exception $e) {
-     echo 'Что-то пошло не так' . PHP_EOL;
-     echo $e->getMessage() . PHP_EOL;
- }
 
