@@ -8,7 +8,7 @@ class Post
 {
     public function __construct(
         private int $id,
-        private Person $author,
+        private User $author,
         private string $text
     ){
     }
