@@ -3,12 +3,13 @@
 namespace App\Model\Blog;
 
 use App\Model\Person\Name;
+use App\Model\UUID;
 
 class User
 {
     public function __construct(
-        private int    $id,
-        private Name $username,
+        private UUID $uuid,
+        private Name $name,
         private string $login
     )
     {
@@ -16,39 +17,39 @@ class User
 
     public function __toString(): string
     {
-        return "Пользователь $this->id с именем $this->username и логином $this->login." . PHP_EOL;
+        return "Пользователь $this->uuid с именем $this->name и логином $this->login." . PHP_EOL;
     }
 
     /**
-     * @return int
+     * @return UUID
      */
-    public function getId(): int
+    public function getUuid(): UUID
     {
-        return $this->id;
+        return $this->uuid;
     }
 
     /**
-     * @param int $id
+     * @param UUID $uuid
      */
-    public function setId(int $id): void
+    public function setUuid(UUID $uuid): void
     {
-        $this->id = $id;
+        $this->uuid = $uuid;
     }
 
     /**
-     * @return string
+     * @return Name
      */
-    public function getUsername(): string
+    public function getName(): Name
     {
-        return $this->username;
+        return $this->name;
     }
 
     /**
-     * @param Name $username
+     * @param Name $name
      */
-    public function setUsername(Name $username): void
+    public function setUsername(Name $name): void
     {
-        $this->username = $username;
+        $this->name = $name;
     }
 
     /**
