@@ -19,11 +19,26 @@ use App\Repository\UserRepository\SqliteUserRepository;
 $connection = new PDO('sqlite:'.__DIR__.'/blog.sqlite');
 
 $userRepository = new SqliteUserRepository($connection);
+$postRepository = new SqlitePostRepository($connection);
 
-$userCommand = new CreateUserCommand($userRepository);
+$faker = Faker\Factory::create('ru_RU');
+
+//$userCommand = new CreateUserCommand($userRepository);
 
 try {
-    $userCommand->handle(Arguments::fromArgv($argv));
+//    $userCommand->handle(Arguments::fromArgv($argv));
+    $user = $userRepository->getByUsername('admin');
+    $postUuid = UUID::random();
+    $postRepository->save(new Post(
+        $postUuid,
+        $user,
+        $faker->realText(rand(10, 11)),
+        $faker->realText(rand(10,100))
+    ));
+
+    $post = $postRepository->get($postUuid);
+
+    echo $post;
 } catch (AppException $e) {
     echo 'Что-то пошло не так' . PHP_EOL;
     echo $e->getMessage() . PHP_EOL;
