@@ -3,8 +3,9 @@
 namespace App\Repository\UserRepository;
 use App\Exception\UserException\UserNotFoundException;
 use App\Model\Blog\User;
+use App\Model\UUID;
 
-class InMemoryUserRepository
+class InMemoryUserRepository implements UserRepositoryInterface
 {
     private array $users = [];
 
@@ -13,22 +14,43 @@ class InMemoryUserRepository
         $this->users[] = $user;
     }
 
-    public function get(int $id): User
+    /**
+     * @throws UserNotFoundException
+     */
+    public function get(UUID $uuid): User
     {
         $return = null;
 
         foreach ($this->users as $user) {
-            if ($user->getId() == $id) {
+            if ($user->getUUID() === (string) $uuid) {
                 $return = $user;
             }
         }
 
         if (null === $return) {
-            throw new UserNotFoundException("Пользователь {$id} не найден!");
+            throw new UserNotFoundException(
+                sprintf('Пользователь %s не найден!', (string) $uuid)
+            );
         }
 
         return $return;
 
+    }
+
+    /**
+     * @throws UserNotFoundException
+     */
+    public function getByUsername(string $username): User
+    {
+        foreach ($this->users as $user) {
+            if ($user->username() === $username) {
+                return $user;
+            }
+        }
+
+        throw new UserNotFoundException(
+            sprintf('Пользователь %s не найден!', (string) $username)
+        );
     }
 
 }
