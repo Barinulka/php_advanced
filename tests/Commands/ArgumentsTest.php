@@ -4,6 +4,8 @@ namespace App\UnitTests\Commands;
 
 use App\Commands\Arguments;
 use App\Exception\ArgumentsException;
+use PhpParser\Node\Arg;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 
 class ArgumentsTest extends TestCase
@@ -38,4 +40,38 @@ class ArgumentsTest extends TestCase
         // ВЫполняем действие приводящее к исключению
         $command->get('some_key');
     }
+
+
+    // Провайдер данных
+    public static function argumentsProvider(): iterable
+    {
+        return [
+            // Первое значение будет передано в тест первым аргументом,
+            // Второе значение будет передано вторым аргументом
+            ['some_string', 'some_string'],
+            ['some_key', 'some_key'],
+            [' some_string', 'some_string'],
+            [' some_string ', 'some_string'],
+            [123, '123'],
+            [12.3, '12.3']
+        ];
+    }
+
+    // Связываем тест с провайдером данных с помощьюаннотации @dataProvider
+    // У теста два агрумента
+    // В одном тестовом наборе из провайдера данныхдва значения
+    #[DataProvider('argumentsProvider')]
+    public function testItConvertsArgumentsToStrings(
+        $inputValue,
+        $expectedValue
+    ): void
+    {
+        $command = new Arguments(['some_key' => $inputValue]);
+
+        $value = $command->get('some_key');
+
+        $this->assertEquals($expectedValue, $value);
+    }
+
+
 }
