@@ -73,5 +73,14 @@ class ArgumentsTest extends TestCase
         $this->assertEquals($expectedValue, $value);
     }
 
+    public function testItConstructorContinueWhenEmptyArgumentValue(): void
+    {
+        $command = new Arguments(['some_key' => 'some_value', 'empty_key' => '']);
+
+        $this->expectException(ArgumentsException::class);
+        $this->expectExceptionMessage('Не передан аргумент: empty_key');
+
+        $command->get('empty_key');
+    }
 
 }
