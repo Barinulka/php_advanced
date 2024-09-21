@@ -17,6 +17,10 @@
         "symfony/polyfill-uuid": "^1.29"
     },
     "require-dev": {
-        "roave/security-advisories": "dev-latest"
+        "roave/security-advisories": "dev-latest",
+        "phpunit/phpunit": "^11.2"
+    },
+    "scripts": {
+        "test": "phpunit tests --testdox --colors"
     }
 }

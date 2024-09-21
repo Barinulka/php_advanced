@@ -25,23 +25,23 @@ $commentRepository = new SqliteCommentRepository($connection);
 
 $faker = Faker\Factory::create('ru_RU');
 
-//$userCommand = new CreateUserCommand($userRepository);
+$userCommand = new CreateUserCommand($userRepository);
 
 try {
-//    $userCommand->handle(Arguments::fromArgv($argv));
-    $user = $userRepository->getByUsername('admin');
-    $post = $postRepository->get(new UUID('1bbf7afc-ef85-4f74-be21-248405ed8b77'));
+    $userCommand->handle(Arguments::fromArgv($argv));
+    // $user = $userRepository->getByUsername('admin');
+    // $post = $postRepository->get(new UUID('1bbf7afc-ef85-4f74-be21-248405ed8b77'));
 
-    $commentUuid = UUID::random();
+    // $commentUuid = UUID::random();
 
-    $comment = new Comment(
-        $commentUuid,
-        $user,
-        $post,
-        $faker->realText(rand(10, 50))
-    );
+    // $comment = new Comment(
+    //     $commentUuid,
+    //     $user,
+    //     $post,
+    //     $faker->realText(rand(10, 50))
+    // );
 
-    echo $comment;
+    // echo $comment;
 } catch (AppException $e) {
     echo 'Что-то пошло не так' . PHP_EOL;
     echo $e->getMessage() . PHP_EOL;
