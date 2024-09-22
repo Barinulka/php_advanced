@@ -20,14 +20,14 @@ class Request
     public function path(): string
     {
         if (!array_key_exists('REQUEST_URI', $this->server)) {
-            throw new HttpException('Невозможно получить path из запроса');
+            throw new HttpException('Cannot get path from the request');
         }
 
         $components = parse_url($this->server['REQUEST_URI']);
 
         if (!is_array($components) || !array_key_exists('path', $components)) {
             // Если мы не можем получить путь - бросаем исключение
-            throw new HttpException('Невозможно получить path из запроса');
+            throw new HttpException('Cannot get path from the request');
         }
 
         return $components['path'];
@@ -42,15 +42,15 @@ class Request
     {
         if (!array_key_exists($param, $this->get)) {
             throw new HttpException(
-                "В запросе нет такого параметра запроса: $param"
+                "No such query param in the request: $param"
             );
         }
 
-        $value = trim($this->get[$param] ?? '');
+        $value = trim($this->get[$param]);
 
         if (empty($value)) {
             throw new HttpException(
-                "Пустой параметр запроса в запросе: $param"
+                "Empty query param in the request: $param"
             );
         }
 
@@ -67,7 +67,7 @@ class Request
 
         if (!array_key_exists($headerName, $this->server)) {
             throw new HttpException(
-                "В запросе нет такого заголовка: $header"
+                "No such header in the request: $header"
             );
         }
 
@@ -75,7 +75,7 @@ class Request
 
         if (empty($value)) {
             throw new HttpException(
-                "Пустой заголовок в запросе: $header"
+                "Empty header in the request: $header"
             );
         }
 
