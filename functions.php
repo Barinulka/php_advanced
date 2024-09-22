@@ -1,6 +1,6 @@
 <?php
 
-function EA($obj, $ex = false): void
+function EA($obj, $ex = true): void
 {
     echo '<pre>';
     print_r($obj);

@@ -33,3 +33,9 @@ composer test
 ```
 В результате PHPUnit сгенерирует отчёт в виде html-файлов в папке coverage_report. 
 В любом браузере можно будет открыть файл coverage_report/index.html и просмотреть отчеты по покрытию кода тестами.
+
+## Встроенный PHP сервер
+
+```
+php -S localhost:8080 http.php
+```
