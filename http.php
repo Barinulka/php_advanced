@@ -3,12 +3,14 @@
  * Точка входа в приложение
  */
 
+use App\Http\Actions\Comments\ActionCreateComment;
 use App\Http\Actions\Posts\ActionCreatePost;
 use App\Http\Actions\Posts\ActionFindPostByUUID;
 use App\Http\Actions\Users\ActionCreateUser;
 use App\Http\Actions\Users\ActionFindByUsername;
 use App\Http\Request;
 use App\Http\ErrorResponse;
+use App\Repository\CommentRepository\SqliteCommentRepository;
 use App\Repository\PostRepository\SqlitePostRepository;
 use App\Repository\UserRepository\SqliteUserRepository;
 
@@ -64,11 +66,19 @@ $routes = [
                 new PDO('sqlite:' . __DIR__ . '/blog.sqlite')
             )
         ),
+        '/comments/create' => new ActionCreateComment(
+            new SqliteCommentRepository(
+                new PDO('sqlite:' . __DIR__ . '/blog.sqlite')
+            ),
+            new SqlitePostRepository(
+                new PDO('sqlite:' . __DIR__ . '/blog.sqlite')
+            ),
+            new SqliteUserRepository(
+                new PDO('sqlite:' . __DIR__ . '/blog.sqlite')
+            )
+        ),
     ],
     'DELETE' => [
-
-    ],
-    'PUT' => [
 
     ]
 ];
