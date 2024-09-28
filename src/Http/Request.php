@@ -7,8 +7,9 @@ use App\Exception\Http\HttpException;
 class Request
 {
     public function __construct(
-        private array $get,
-        private array $server
+        private readonly array $get,
+        private readonly array $server,
+        private readonly string $body
     ){
     }
 
@@ -80,5 +81,47 @@ class Request
         }
 
         return $value;
+    }
+
+    public function jsonBody(): array
+    {
+        try {
+            $data = json_decode($this->body, true, 512, JSON_THROW_ON_ERROR);
+        } catch (\JsonException) {
+            throw new HttpException("Cannot decode json body");
+        }
+
+        if (!is_array($data)) {
+            throw new HttpException("Not an array/object in json body");
+        }
+
+        return $data;
+    }
+
+    /**
+     * @throws HttpException
+     */
+    public function jsonBodyField(string $field): mixed
+    {
+        $data = $this->jsonBody();
+
+        if (!array_key_exists($field, $data)) {
+            throw new HttpException("No such field: $field");
+        }
+
+        if (empty($data[$field])) {
+            throw new HttpException("Empty field: $field");
+        }
+
+        return $data[$field];
+    }
+
+    public function method(): string
+    {
+        if (!array_key_exists('REQUEST_METHOD', $this->server)) {
+            throw new HttpException('Cannot get method from the request');
+        }
+
+        return $this->server['REQUEST_METHOD'];
     }
 }
