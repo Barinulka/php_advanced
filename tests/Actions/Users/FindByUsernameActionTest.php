@@ -1,6 +1,6 @@
 <?php
 
-namespace Actions;
+namespace Actions\Users;
 
 use App\Exception\UserException\UserNotFoundException;
 use App\Http\Actions\Users\ActionFindByUsername;
